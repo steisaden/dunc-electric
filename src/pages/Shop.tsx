@@ -98,7 +98,7 @@ export function Shop() {
       </section>
 
       {/* Right Side: Specs & Cart */}
-      <section className="lg:w-1/2 flex flex-col space-y-stack-gap pb-32">
+      <section className="lg:w-1/2 flex flex-col space-y-stack-gap pb-32 lg:pt-6">
         <motion.div
           {...panelMotion}
           transition={{ ...panelMotion.transition, delay: 0.1 }}
