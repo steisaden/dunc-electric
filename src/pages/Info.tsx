@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Cpu, Cable, HelpCircle, Plus, Minus, ShieldCheck } from "lucide-react";
 import { assetPath } from "@/lib/asset";
 import { cn } from "@/lib/utils";
 
 export function Info() {
+  const location = useLocation();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  useEffect(() => {
+    const section = new URLSearchParams(location.search).get("section");
+    if (!section) return;
+
+    const target = document.getElementById(section);
+    if (!target) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.search]);
 
   const faqs = [
     {
@@ -74,18 +90,18 @@ export function Info() {
             Knowledge Base
           </div>
           <nav className="flex flex-col gap-unit">
-            <a href="#origin" className="group flex items-center gap-3 py-2 px-3 rounded bg-surface-container border border-outline-variant neon-glow">
+            <Link to="/info?section=origin" className="group flex items-center gap-3 py-2 px-3 rounded bg-surface-container border border-outline-variant neon-glow">
               <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(209,188,255,0.8)]"></div>
               <span className="font-sans text-label-sm text-primary uppercase">The Origin</span>
-            </a>
-            <a href="#tech" className="group flex items-center gap-3 py-2 px-3 rounded hover:bg-surface-container border border-transparent hover:border-outline-variant transition-all">
+            </Link>
+            <Link to="/info?section=tech" className="group flex items-center gap-3 py-2 px-3 rounded hover:bg-surface-container border border-transparent hover:border-outline-variant transition-all">
               <div className="w-2 h-2 rounded-full bg-outline-variant group-hover:bg-on-surface-variant transition-colors"></div>
               <span className="font-sans text-label-sm text-on-surface-variant group-hover:text-on-surface uppercase transition-colors">The Tech</span>
-            </a>
-            <a href="#faq" className="group flex items-center gap-3 py-2 px-3 rounded hover:bg-surface-container border border-transparent hover:border-outline-variant transition-all">
+            </Link>
+            <Link to="/info?section=faq" className="group flex items-center gap-3 py-2 px-3 rounded hover:bg-surface-container border border-transparent hover:border-outline-variant transition-all">
               <div className="w-2 h-2 rounded-full bg-outline-variant group-hover:bg-on-surface-variant transition-colors"></div>
               <span className="font-sans text-label-sm text-on-surface-variant group-hover:text-on-surface uppercase transition-colors">Returns & Warranty</span>
-            </a>
+            </Link>
           </nav>
           
           {/* Decorative Rack Vents */}
