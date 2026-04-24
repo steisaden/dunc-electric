@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import { ZoomIn, Settings, Cable, Fingerprint, ShoppingCart } from "lucide-react";
-import { assetPath } from "@/lib/asset";
 import { cn } from "@/lib/utils";
+import { buildShopCartItem, shopColorOptions, shopImageVariants, type ShopColorIndex } from "@/lib/cart";
+import { useCart } from "@/context/CartContext";
 
 const panelMotion = {
   initial: { opacity: 0, y: 18 },
@@ -17,35 +19,30 @@ const imageMotion = {
   transition: { duration: 0.82, ease: [0.16, 1, 0.3, 1] as const }
 };
 
-const imageVariants = [
-  assetPath("shop-images/01-colorwave.jpg"),
-  assetPath("shop-images/02-multicolor.webp"),
-  assetPath("shop-images/03-purple.webp"),
-  assetPath("shop-images/04-black.webp")
-];
-
 export function Shop() {
-  const colorOptions = [
-    { label: "Tiger Nachos", imageIndex: 1 },
-    { label: "Origin Black", imageIndex: 3 },
-    { label: "Sabbath purple", imageIndex: 2 }
-  ];
-
+  const navigate = useNavigate();
+  const { addItem } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(0);
+  const [selectedColor, setSelectedColor] = useState<ShopColorIndex>(0);
 
-  const handleSliderChange = (value: number) => {
+  const handleSliderChange = (value: ShopColorIndex) => {
     setSelectedColor(value);
-    setSelectedImage(colorOptions[value].imageIndex);
+    setSelectedImage(shopColorOptions[value].imageIndex);
   };
 
   const handleThumbnailClick = (idx: number) => {
     setSelectedImage(idx);
 
-    const mappedColorIndex = colorOptions.findIndex((option) => option.imageIndex === idx);
+    const mappedColorIndex = shopColorOptions.findIndex((option) => option.imageIndex === idx);
     if (mappedColorIndex !== -1) {
-      setSelectedColor(mappedColorIndex);
+      setSelectedColor(mappedColorIndex as ShopColorIndex);
     }
+  };
+
+  const handleAddToCart = () => {
+    const cartItem = buildShopCartItem(selectedColor);
+    addItem(cartItem);
+    navigate("/cart");
   };
 
   return (
@@ -62,7 +59,7 @@ export function Shop() {
               {...imageMotion}
               alt="Electrified chanter stock"
               className="w-full h-full object-contain p-6 sm:p-8 lg:p-10 mix-blend-luminosity group-hover:mix-blend-normal transition-[filter,opacity,transform] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer"
-              src={imageVariants[selectedImage]}
+              src={shopImageVariants[selectedImage]}
               onClick={() => {
                 if (selectedImage === 0) {
                   setSelectedImage(0);
@@ -81,7 +78,7 @@ export function Shop() {
         </motion.div>
 
         <div className="grid grid-cols-4 gap-unit">
-          {imageVariants.map((img, idx) => (
+          {shopImageVariants.map((img, idx) => (
             <button
               key={idx}
               onClick={() => handleThumbnailClick(idx)}
@@ -137,7 +134,7 @@ export function Shop() {
               <span className="font-sans text-technical-data text-primary text-xl">$419.00</span>
             </div>
           </div>
-          <button className="tactile-button-primary w-full px-8 py-4 rounded-lg font-sans text-label-sm text-on-primary uppercase tracking-widest hover:neon-glow-active transition-all flex items-center justify-center gap-3">
+          <button onClick={handleAddToCart} className="tactile-button-primary w-full px-8 py-4 rounded-lg font-sans text-label-sm text-on-primary uppercase tracking-widest hover:neon-glow-active transition-all flex items-center justify-center gap-3">
             <ShoppingCart size={18} />
             Add to Cart
           </button>
@@ -213,7 +210,7 @@ export function Shop() {
               </div>
 
               <div className="mt-4 grid grid-cols-3 gap-2 font-sans text-technical-data uppercase text-center tracking-widest">
-                {colorOptions.map((option, idx) => (
+                {shopColorOptions.map((option, idx) => (
                   <button
                     key={option.label}
                     type="button"
