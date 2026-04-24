@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 
+const podcastEpisode = {
+  title: "The Big Rab Show Podcast. Episode 434. David Duncan - DuncElectric",
+  description:
+    "Listen to the podcast episode featuring David Duncan and the DuncElectric chanter stock.",
+  audioSrc:
+    "https://mcdn.podbean.com/mf/web/ir79ms8h9qetvk8w/The_Big_Rab_Show_Podcast_Episode_434_David_Duncan_-_DuncElectric7j3gx.mp3",
+  episodeUrl:
+    "https://bigrabshow.podbean.com/e/the-big-rab-show-podcast-episode-434-david-duncan-duncelectric/"
+};
+
 export function Home() {
   return (
     <main className="flex-grow flex flex-col">
@@ -48,7 +58,7 @@ export function Home() {
             </div>
 
             {/* CTA */}
-            <div className="pt-8">
+            <div className="pt-8 flex flex-col items-center gap-6 w-full">
               <Link
                 to="/shop"
                 className="group relative flex items-center justify-center font-sans text-[11px] font-bold uppercase tracking-widest text-white bg-gradient-to-r from-primary to-[#814180] px-10 py-4 rounded-sm shadow-xl hover:brightness-110 transition-all duration-300 active:scale-95 overflow-hidden"
@@ -56,6 +66,36 @@ export function Home() {
                 <span className="relative z-10 font-bold">Shop Now</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
               </Link>
+
+              <section className="w-full max-w-3xl rounded-xl border border-white/10 bg-black/35 backdrop-blur-md p-4 sm:p-5 shadow-2xl text-left">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="space-y-1">
+                    <p className="font-sans text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
+                      Featured Podcast Episode
+                    </p>
+                    <h2 className="font-grotesk text-xl sm:text-2xl text-white leading-tight">
+                      {podcastEpisode.title}
+                    </h2>
+                    <p className="font-sans text-sm text-white/70 max-w-2xl">
+                      {podcastEpisode.description}
+                    </p>
+                  </div>
+                  <a
+                    href={podcastEpisode.episodeUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="shrink-0 inline-flex items-center justify-center rounded-sm border border-white/15 px-4 py-2 font-sans text-[11px] font-bold uppercase tracking-widest text-white/85 transition-colors hover:border-primary hover:text-primary"
+                  >
+                    Open Episode
+                  </a>
+                </div>
+                <div className="mt-4">
+                  <audio controls preload="none" className="w-full">
+                    <source src={podcastEpisode.audioSrc} type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              </section>
             </div>
           </motion.div>
         </div>
