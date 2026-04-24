@@ -26,9 +26,9 @@ const imageVariants = [
 
 export function Shop() {
   const colorOptions = [
-    { label: "Multicolor", imageIndex: 1 },
-    { label: "Black", imageIndex: 3 },
-    { label: "Purple", imageIndex: 2 }
+    { label: "Tiger Nachos", imageIndex: 1 },
+    { label: "Origin Black", imageIndex: 3 },
+    { label: "Sabbath purple", imageIndex: 2 }
   ];
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -111,7 +111,7 @@ export function Shop() {
             <div>
               <h1 className="font-grotesk text-headline-xl text-on-background mb-2">Electrified Chanter Stock</h1>
               <p className="font-sans text-body-md text-on-surface-variant">
-                Highland Bagpipe Version | Black Powder-Coated Aluminum
+                Highland Bagpipe Version | Origin Black Powder-Coated Aluminum
               </p>
             </div>
           </div>
